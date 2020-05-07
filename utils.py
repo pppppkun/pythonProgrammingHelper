@@ -1,7 +1,7 @@
 import os
 import shutil
 import zipfile
-import re
+import time
 
 
 def unzip(zip_name):
@@ -33,19 +33,26 @@ def detect_use_case_oriented(file_path, case_path):
     """
     c = open(case_path, encoding='utf-8')
     f = open(file_path, encoding='utf-8')
-    s = c.read()
-    s = s[1:len(s)-1]
-    c = s.split(',')
+    s = eval(c.read())
+    for case in s:
+        in_ = case['input']
+        test = open('testCases.in', 'w')
+        test.write(in_)
+        test.close()
+        code = 'main.py'
+        start = time.time()
+        os.system('python ' + code + ' < ' + 'testCases.in' + ' >> ' + 'testCases.in')
+        end = time.time()
+        print(end - start)
+
+
+def cal_time_complex(file_path, case_path):
+
+
 
 
 
 if __name__ == '__main__':
-    c = open('testCases.json', encoding='utf-8')
-    s = c.read()
-    pattern = re.compile(r'".+"')
-    c = pattern.findall(s)
-
-
     # MAIN = 'main.py'
     # CASE = '.mooctest\\testCases.json'
     # file = os.getcwd() + '\\train'
