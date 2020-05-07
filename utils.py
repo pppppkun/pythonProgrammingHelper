@@ -1,66 +1,81 @@
+import os
+import shutil
+import zipfile
 import re
 
 
-class Variable(object):
-    def __init__(self, value, type_):
-        # value = str
-        # type_ = str
-        self.value = value
-        self.type_ = type_
-
-    def __str__(self):
-        return self.value + self.type_
-
-    def __repr__(self):
-        return str(self.value) + " " + str(self.type_)
+def unzip(zip_name):
+    zip_file = zipfile.ZipFile(zip_name)
+    sub_name = zip_file.namelist()[0]
+    zip_file.extract(sub_name)
+    sub_zip_file = zipfile.ZipFile(sub_name)
+    for _ in sub_zip_file.namelist():
+        sub_zip_file.extract(_)
+    sub_zip_file.close()
+    zip_file.close()
 
 
-def clean_all_space(s):
-    l = list(s)
-    while ' ' in l:
-        l.remove(' ')
-    return ''.join(l)
+def rm_file(dont_rm_file):
+    for _ in os.listdir(os.getcwd()):
+        if os.path.isdir(_):
+            shutil.rmtree(_)
+        else:
+            if _ == dont_rm_file:
+                continue
+            os.remove(_)
 
 
-def add_to_var_pool(s, docker):
-    s = clean_all_space(s)
-    var_name = ''
-    value = ''
-    index = (str)(s).find('=', 0, len(s))
-    for i in range(index):
-        var_name += s[i]
-    for i in range(index+1, len(s)):
-        value += s[i]
-    type_ = judge_type(value)
-    v = Variable(value, type_)
-    docker[var_name] = v
-
-def judge_type(s):
-    s = str(s)
-    pattern = re.compile(r'[a-zA-Z0-9_]+()')
-    if s.isdigit():
-        return 'int'
-    if s.isalpha():
-        return 'str'
-    if re.match(pattern, s):
-        a = re.match(pattern, s)
-        return a[0]
-    if '[' in s and ']' in s:
-        return 'list'
-
-def print_value(docker):
-    for _ in docker:
-        v = docker[_]
-        type_ = v.type_
-        print(_, v.value)
-
+def detect_use_case_oriented(file_path, case_path):
+    """
+    :param file_path: the file which students upload
+    :param case_path: the use-case which will be input
+    :return: a value between 0-1 represent the rate of how many use-cases this file orient
+    """
+    c = open(case_path, encoding='utf-8')
+    f = open(file_path, encoding='utf-8')
+    s = c.read()
+    s = s[1:len(s)-1]
+    c = s.split(',')
 
 
 
 if __name__ == '__main__':
-    s = "a = 1"
-    statement = ['a = 1', 'a = []', 'a = [\'a\',\'b\',\'c\']', 'var_pool = dict()', 'a_b = [1,2,2]']
-    var_pool = dict()
-    for s in statement:
-        add_to_var_pool(s, var_pool)
-    print_value(var_pool)
+    c = open('testCases.json', encoding='utf-8')
+    s = c.read()
+    pattern = re.compile(r'".+"')
+    c = pattern.findall(s)
+
+
+    # MAIN = 'main.py'
+    # CASE = '.mooctest\\testCases.json'
+    # file = os.getcwd() + '\\train'
+    # os.chdir(file)
+    # fstack = list()
+    # for _ in os.listdir(os.getcwd()):
+    #     fstack.append(os.getcwd())
+    #     os.chdir(os.getcwd()+"\\"+_)
+    #     # print(os.getcwd())
+    #     for __ in os.listdir(os.getcwd()):
+    #         fstack.append(os.getcwd())
+    #         os.chdir(os.getcwd()+"\\"+__)
+    #         # print(os.getcwd())
+    #         for ___ in os.listdir(os.getcwd()):
+    #             if not os.path.isdir(___):
+    #                 continue
+    #             fstack.append(os.getcwd())
+    #             os.chdir(os.getcwd()+"\\"+___)
+    #             # print(os.getcwd())
+    #             for filename in os.listdir(os.getcwd()):
+    #                 print(os.getcwd())
+    #                 unzip(filename)
+    #                 detect_use_case_oriented(MAIN, CASE)
+    #                 rm_file(filename)
+    #             os.chdir(fstack[-1])
+    #             fstack.pop(-1)
+    #         os.chdir(fstack[-1])
+    #         fstack.pop(-1)
+    #     os.chdir(fstack[-1])
+    #     fstack.pop(-1)
+
+
+
