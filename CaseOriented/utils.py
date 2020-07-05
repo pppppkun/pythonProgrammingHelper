@@ -3,7 +3,7 @@ import shutil
 import zipfile
 import re
 import json
-
+from Case import Case
 
 def unzip(zip_name):
     zip_file = zipfile.ZipFile(zip_name)
@@ -26,7 +26,7 @@ def rm_file(dont_rm_file):
             os.remove(_)
 
 
-def detect_use_case_oriented(file_path, case_path, id):
+def detect_use_case_oriented(file_path, case_path, user_id, case_id, upload_id):
     """
     :param file_path: the file which students upload
     :param case_path: the use-case which will be input
@@ -52,8 +52,9 @@ def detect_use_case_oriented(file_path, case_path, id):
                     print(_+" "+__)
                     break
     if count/len(s) > threshold:
-        print('The {} upload is user-case oriented'.format(id), end=' ')
+        print('The {} upload is user-case oriented'.format(case_id+' '+upload_id), end=' ')
         print('Num of cases which match in this code : {}:{} ({}%)'.format(count, len(s), count/len(s)*100))
+
         return 1
     return 0
 
@@ -73,15 +74,20 @@ def cd():
     os.chdir(os.getcwd()[:len(s)-_-1])
 
 
-def get_score():
-    f = open('sample.json', encoding='utf-8')
+def get_score(case_id, user_id):
+    f = open(r'E:\PythonProject\bigHomework\sample.json', encoding='utf-8')
     res = f.read()
     data = json.loads(res)
-    return data
+    cases = data[user_id]['cases']
+    for _ in cases:
+        if _['case_id'] == case_id:
+            return Case(_, user_id)
+
+
 
 if __name__ == '__main__':
-    cd()
-    get_score()
+    case = get_score('2172', '3544')
+    print(case)
 #     MAIN = 'main.py'
 #     CASE = '.mooctest\\testCases.json'
 #     file = os.getcwd() + '\\train'
