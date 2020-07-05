@@ -10,7 +10,7 @@ base_env = os.getcwd()
 for _ in data:
     cases = data[_]['cases']
     for __ in cases:
-        if __['final_score'] == 100:
+        if __['final_score'] > -1:
             os.chdir(base_env)
             path = os.getcwd() + '\\' + 'train'
             path = path + '\\' + str(_)
