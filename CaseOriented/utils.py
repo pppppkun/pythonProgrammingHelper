@@ -39,8 +39,15 @@ def detect_use_case_oriented(file_path, case_path, user_id, case_id, upload_id):
     prints = get_print(main_)
     count = 0
     threshold = 0
+    s_ = ''
     for case in s:
-        # in_ = case['input']
+        in_ = case['input']
+        ins = in_.split('\n')
+        for _ in ins:
+            if _ == '':
+                continue
+            # TODO
+
         out_ = case['output']
         outs = out_.split('\n')
         for _ in outs:
@@ -49,14 +56,14 @@ def detect_use_case_oriented(file_path, case_path, user_id, case_id, upload_id):
             for __ in prints:
                 if _ in __:
                     count += 1
+                    s_ += _ + " " + __ + "\n"
                     print(_+" "+__)
                     break
     if count/len(s) > threshold:
-        print('The {} upload is user-case oriented'.format(case_id+' '+upload_id), end=' ')
-        print('Num of cases which match in this code : {}:{} ({}%)'.format(count, len(s), count/len(s)*100))
-
-        return 1
-    return 0
+        s_ += 'The {} upload is user-case oriented. '.format(case_id+' '+upload_id)
+        s_ += 'Num of cases which match in this code : {}:{} ({}%)'.format(count, len(s), count/len(s)*100)
+        return 1, s_
+    return 0, ''
 
 
 def get_print(main_function):
@@ -74,7 +81,7 @@ def cd():
     os.chdir(os.getcwd()[:len(s)-_-1])
 
 
-def get_score(case_id, user_id):
+def get_score(user_id, case_id):
     f = open(r'E:\PythonProject\bigHomework\sample.json', encoding='utf-8')
     res = f.read()
     data = json.loads(res)
@@ -86,8 +93,8 @@ def get_score(case_id, user_id):
 
 
 if __name__ == '__main__':
-    case = get_score('2172', '3544')
-    print(case)
+    case = get_score('48117', '2081')
+    print(case.get_code('249346'))
 #     MAIN = 'main.py'
 #     CASE = '.mooctest\\testCases.json'
 #     file = os.getcwd() + '\\train'

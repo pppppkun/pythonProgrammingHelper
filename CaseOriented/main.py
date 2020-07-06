@@ -29,11 +29,11 @@ if __name__ == '__main__':
                 # print(os.getcwd())
                 for filename in os.listdir(os.getcwd()):
                     utils.unzip(filename)
-                    res = utils.detect_use_case_oriented(MAIN, CASE, _, __, ___)
+                    res, s_ = utils.detect_use_case_oriented(MAIN, CASE, _, __, ___)
                     if res == 1:
                         print(os.getcwd())
                         noc += 1
-                        a = utils.get_score(_, )
+                        l.append([_, __, ___, s_])
                     total += 1
                     utils.rm_file(filename)
                 os.chdir(fstack[-1])
@@ -43,4 +43,19 @@ if __name__ == '__main__':
         os.chdir(fstack[-1])
         fstack.pop(-1)
     print(noc, total, noc / total)
+    for _ in l:
+        print(_)
+    while True:
+        print("请输入userId和caseId来定位具体的提交")
+        userId = input()
+        caseId = input()
+        print(utils.get_score(userId, caseId))
+        print("是否查看具体代码，需要请输出1，否则输入0")
+        f = int(input())
+        if f == 1:
+            print("请输入提交id")
+            uploadId = input()
+            utils.get_score(userId, caseId).get_code(uploadId)
+        else:
+            pass
 
