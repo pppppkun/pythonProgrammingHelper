@@ -4,13 +4,6 @@ import shutil
 
 
 class Case:
-    uploader = ''
-    case_id = ''
-    case_type = ''
-    final_score = 0
-    upload_records = list()
-    main_ = list()
-
 
     def __init__(self, case, uploader):
         self.uploader = uploader
@@ -18,7 +11,7 @@ class Case:
         self.case_type = case['case_type']
         self.final_score = case['final_score']
         self.upload_records = case['upload_records']
-        self.main_ = []
+        self.match_records = dict()
 
     def get_every_upload_score(self):
         s = '每次提交分数 { '

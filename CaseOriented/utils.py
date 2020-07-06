@@ -26,7 +26,7 @@ def rm_file(dont_rm_file):
             os.remove(_)
 
 
-def detect_use_case_oriented(file_path, case_path, user_id, case_id, upload_id):
+def detect_use_case_oriented(file_path, case_path, user_id, case_id, upload_id, r):
     """
     :param file_path: the file which students upload
     :param case_path: the use-case which will be input
@@ -37,16 +37,25 @@ def detect_use_case_oriented(file_path, case_path, user_id, case_id, upload_id):
     s = eval(c.read())
     main_ = f.read()
     prints = get_print(main_)
-    count = 0
+    lines = main_.split('\n')
     threshold = 0
+    ID = user_id + ' '+case_id[0:4]
     s_ = ''
+    si_ = ''
+    so_ = ''
+    ic = 0
+    oc = 0
     for case in s:
         in_ = case['input']
         ins = in_.split('\n')
         for _ in ins:
             if _ == '':
                 continue
-            # TODO
+            for __ in lines:
+                if _ in __:
+                    ic += 1
+                    si_ += _ + ' ' + __ + '\n'
+                    break
 
         out_ = case['output']
         outs = out_.split('\n')
@@ -55,15 +64,24 @@ def detect_use_case_oriented(file_path, case_path, user_id, case_id, upload_id):
                 continue
             for __ in prints:
                 if _ in __:
-                    count += 1
-                    s_ += _ + " " + __ + "\n"
-                    print(_+" "+__)
+                    oc += 1
+                    so_ += _ + " " + __ + "\n"
                     break
+    count = ic + oc
     if count/len(s) > threshold:
-        s_ += 'The {} upload is user-case oriented. '.format(case_id+' '+upload_id)
-        s_ += 'Num of cases which match in this code : {}:{} ({}%)'.format(count, len(s), count/len(s)*100)
-        return 1, s_
-    return 0, ''
+        s_ += 'The {} upload is user-case oriented. '.format(user_id + ' ' + case_id + ' ' + upload_id)
+        s_ += 'Matched times : {}:{} ({}%)\n'.format(count, 2*len(s), count/(2*len(s))*100)
+        s_ += 'Input( {} ):\n'.format(ic/len(s))
+        s_ += si_
+        s_ += 'Output( {} )\n'.format(oc/len(s)) + so_
+        if ID in r:
+            r[ID].match_records[upload_id] = s_
+        else:
+            r[ID] = get_score(user_id, case_id[0:4])
+            r[ID].match_records[upload_id] = s_
+        return count
+
+    return -1, ''
 
 
 def get_print(main_function):
@@ -93,8 +111,18 @@ def get_score(user_id, case_id):
 
 
 if __name__ == '__main__':
-    case = get_score('48117', '2081')
-    print(case.get_code('249346'))
+    code = r'E:\PythonProject\bigHomework\train\3544\2172线性表\268885\main.py'
+    case = r'E:\PythonProject\bigHomework\train\3544\2172线性表\268885\.mooctest\testCases.json'
+    raa = dict()
+    c = detect_use_case_oriented(code, case, user_id='3544', case_id='2172线性表', upload_id='268885', r=raa)
+    print(raa['3544 2172'])
+    print(raa['3544 2172'].match_records['268885'])
+
+    # r = dict()
+    # r['a'] = 1
+    # print(r)
+    # if 'a' in r:
+    #     print(r['a'])
 #     MAIN = 'main.py'
 #     CASE = '.mooctest\\testCases.json'
 #     file = os.getcwd() + '\\train'

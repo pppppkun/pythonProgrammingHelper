@@ -11,6 +11,7 @@ fstack = list()
 noc = 0
 total = 0
 l = []
+result = dict()
 
 if __name__ == '__main__':
     for _ in os.listdir(os.getcwd()):
@@ -29,11 +30,9 @@ if __name__ == '__main__':
                 # print(os.getcwd())
                 for filename in os.listdir(os.getcwd()):
                     utils.unzip(filename)
-                    res, s_ = utils.detect_use_case_oriented(MAIN, CASE, _, __, ___)
-                    if res == 1:
-                        print(os.getcwd())
+                    res = utils.detect_use_case_oriented(MAIN, CASE, _, __, ___, result)
+                    if res != -1:
                         noc += 1
-                        l.append([_, __, ___, s_])
                     total += 1
                     utils.rm_file(filename)
                 os.chdir(fstack[-1])
@@ -43,19 +42,26 @@ if __name__ == '__main__':
         os.chdir(fstack[-1])
         fstack.pop(-1)
     print(noc, total, noc / total)
-    for _ in l:
-        print(_)
+    for _ in result:
+        print(result[_])
     while True:
         print("请输入userId和caseId来定位具体的提交")
         userId = input()
         caseId = input()
-        print(utils.get_score(userId, caseId))
+        print(result[userId+' '+caseId])
         print("是否查看具体代码，需要请输出1，否则输入0")
         f = int(input())
-        if f == 1:
-            print("请输入提交id")
-            uploadId = input()
-            utils.get_score(userId, caseId).get_code(uploadId)
-        else:
-            pass
+        while True:
+            if f == 1:
+                print("请输入提交id，如果想查看其他提交请输出0")
+                uploadId = input()
+                if uploadId == '0':
+                    break
+                result[userId + ' ' + caseId].get_code(uploadId)
+                print(result[userId+' '+caseId].match_records[uploadId])
+            elif f == 0:
+                break
+            else:
+                print("请重新输入")
+                f = int(input())
 
