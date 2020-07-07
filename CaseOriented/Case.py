@@ -12,6 +12,7 @@ class Case:
         self.final_score = case['final_score']
         self.upload_records = case['upload_records']
         self.match_records = dict()
+        self.sort_key = 0
 
     def get_every_upload_score(self):
         s = '每次提交分数 { '

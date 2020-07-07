@@ -79,6 +79,7 @@ def detect_use_case_oriented(file_path, case_path, user_id, case_id, upload_id, 
         else:
             r[ID] = get_score(user_id, case_id[0:4])
             r[ID].match_records[upload_id] = s_
+        r[ID].sort_key = len(r[ID].match_records) / (2*len(s))
         return count
 
     return -1, ''
@@ -111,48 +112,15 @@ def get_score(user_id, case_id):
 
 
 if __name__ == '__main__':
-    code = r'E:\PythonProject\bigHomework\train\3544\2172线性表\268885\main.py'
-    case = r'E:\PythonProject\bigHomework\train\3544\2172线性表\268885\.mooctest\testCases.json'
-    raa = dict()
-    c = detect_use_case_oriented(code, case, user_id='3544', case_id='2172线性表', upload_id='268885', r=raa)
-    print(raa['3544 2172'])
-    print(raa['3544 2172'].match_records['268885'])
-
-    # r = dict()
-    # r['a'] = 1
-    # print(r)
-    # if 'a' in r:
-    #     print(r['a'])
-#     MAIN = 'main.py'
-#     CASE = '.mooctest\\testCases.json'
-#     file = os.getcwd() + '\\train'
-#     os.chdir(file)
-#     fstack = list()
-#     for _ in os.listdir(os.getcwd()):
-#         fstack.append(os.getcwd())
-#         os.chdir(os.getcwd()+"\\"+_)
-#         # print(os.getcwd())
-#         for __ in os.listdir(os.getcwd()):
-#             fstack.append(os.getcwd())
-#             os.chdir(os.getcwd()+"\\"+__)
-#             # print(os.getcwd())
-#             for ___ in os.listdir(os.getcwd()):
-#                 if not os.path.isdir(___):
-#                     continue
-#                 fstack.append(os.getcwd())
-#                 os.chdir(os.getcwd()+"\\"+___)
-#                 # print(os.getcwd())
-#                 for filename in os.listdir(os.getcwd()):
-#                     print(os.getcwd())
-#                     unzip(filename)
-#                     detect_use_case_oriented(MAIN, CASE)
-#                     rm_file(filename)
-#                 os.chdir(fstack[-1])
-#                 fstack.pop(-1)
-#             os.chdir(fstack[-1])
-#             fstack.pop(-1)
-#         os.chdir(fstack[-1])
-#         fstack.pop(-1)
-
+    # code = r'E:\PythonProject\bigHomework\train\3544\2172线性表\268885\main.py'
+    # case = r'E:\PythonProject\bigHomework\train\3544\2172线性表\268885\.mooctest\testCases.json'
+    # raa = dict()
+    # c = detect_use_case_oriented(code, case, user_id='3544', case_id='2172线性表', upload_id='268885', r=raa)
+    # print(raa['3544 2172'])
+    # print(raa['3544 2172'].match_records['268885'])
+    a = {'a': 2, 'b': 1, 'c': 3}
+    print(a)
+    print(sorted(a))
+    print(sorted(a, key=lambda x:a[x]))
 
 

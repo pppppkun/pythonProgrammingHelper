@@ -10,7 +10,6 @@ os.chdir(file)
 fstack = list()
 noc = 0
 total = 0
-l = []
 result = dict()
 
 if __name__ == '__main__':
@@ -42,6 +41,7 @@ if __name__ == '__main__':
         os.chdir(fstack[-1])
         fstack.pop(-1)
     print(noc, total, noc / total)
+    sorted(result, key=lambda x: result[x].sort_key)
     for _ in result:
         print(result[_])
     while True:
@@ -49,6 +49,9 @@ if __name__ == '__main__':
         userId = input()
         caseId = input()
         print(result[userId+' '+caseId])
+        print('有嫌疑的提交为')
+        for _ in result[userId + ' ' + caseId].match_records:
+            print(_, result[userId+' '+caseId].match_records[_])
         print("是否查看具体代码，需要请输出1，否则输入0")
         f = int(input())
         while True:
@@ -58,7 +61,6 @@ if __name__ == '__main__':
                 if uploadId == '0':
                     break
                 result[userId + ' ' + caseId].get_code(uploadId)
-                print(result[userId+' '+caseId].match_records[uploadId])
             elif f == 0:
                 break
             else:
