@@ -70,7 +70,6 @@ generate_csv(user_id, last_question_id, submit_id, moduleComplex)
 # for i in range(len(csv_line)):
 #     print(csv_line[i])
 
-# np.savetxt('codeComplex.csv', 5, delimiter='\n')
 csvfile = open('csv_test.csv', 'w', newline='')
 writer = csv.writer(csvfile, delimiter='\n')
 writer.writerow([','.join(['user_id', 'question_id', 'submit_id', 'codeComplex'])])
