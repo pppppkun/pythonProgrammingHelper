@@ -3,6 +3,7 @@ import shutil
 import zipfile
 import time
 import mccabe
+import sys
 
 def unzip(zip_name):
     zip_file = zipfile.ZipFile(zip_name)
@@ -73,6 +74,9 @@ def cal_metric(text):
     mccabe.get_code_complexity(text, 1)
 
 if __name__ == '__main__':
+    # 重定向输出流
+    f_handler = open('out.log', 'w')
+    sys.stdout = f_handler
     MAIN = 'main.py'
     CASE = '.mooctest\\testCases.json'
     file = '..\\train'

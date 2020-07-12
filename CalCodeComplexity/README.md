@@ -143,4 +143,8 @@ P = sum(Ci*Ci/10)
 
 以此作为程序复杂度
 
+cal将标准输出流重定向到out.log
+converter用于从out.log中的字符串中的有效数据提取出来并计算程序复杂度并存储为csv文件
+csv文件格式为user_id，question_id，submit_id，codeComplex
+
 参考 [Python抽象语法树](https://www.dazhuanlan.com/2019/12/14/5df3f50c003f4/)
