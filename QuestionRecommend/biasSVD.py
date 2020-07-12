@@ -10,12 +10,12 @@ def biasSVD(data, k, steps, learning_rate, l):
     bi = torch.randn(m, 1).normal_(0, 1)
     bu = torch.randn(n, 1).normal_(0, 1)
     miu = 3.5
-    train = torch.load('/content/drive/My Drive/train', map_location=torch.device('cpu'))
+    train = torch.load('//TODO', map_location=torch.device('cpu'))
     _ = train.shape[0]
     print(user.shape)
     print(item.shape)
     for t in range(steps):
-        print('----------ROUND', t, '----------BEGIN')
+        print('----------round', t, '----------begin')
         user_gradient = torch.zeros(n, k)
         item_gradient = torch.zeros(m, k)
         bi_gradient = torch.zeros(m, 1)
@@ -43,9 +43,9 @@ def biasSVD(data, k, steps, learning_rate, l):
             i = train[__][0]
             j = train[__][1]
             error += torch.pow(data[i][j]-torch.dot(user[i], item[j].t())-miu-bi[j]-bu[i], 2)
-        print('----------ROUND', t, '----------RMSE is: ', torch.sqrt((1/count)*error))
-        print('----------ROUND', t, '----------TRAIN END')
-    test = torch.load('/content/drive/My Drive/test', map_location=torch.device('cpu'))
+        print('----------round', t, '----------rmse is: ', torch.sqrt((1/count)*error))
+        print('----------round', t, '----------train end')
+    test = torch.load('//TODO', map_location=torch.device('cpu'))
     _ = test.shape[0]
     for __ in range(_):
       i = test[__][0]
