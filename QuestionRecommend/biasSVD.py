@@ -1,5 +1,5 @@
 import torch
-
+import itertools
 
 def biasSVD(data, k, steps, learning_rate, l):
     print(data)
@@ -10,8 +10,9 @@ def biasSVD(data, k, steps, learning_rate, l):
     bi = torch.randn(m, 1).normal_(0, 1)
     bu = torch.randn(n, 1).normal_(0, 1)
     miu = 3.5
-    train = torch.load('//TODO', map_location=torch.device('cpu'))
-    _ = train.shape[0]
+    # train = torch.load('//TODO', map_location=torch.device('cpu'))
+    # _ = train.shape[0]
+    _ = data.shape[0]
     print(user.shape)
     print(item.shape)
     for t in range(steps):
@@ -20,9 +21,9 @@ def biasSVD(data, k, steps, learning_rate, l):
         item_gradient = torch.zeros(m, k)
         bi_gradient = torch.zeros(m, 1)
         bu_gradient = torch.zeros(n, 1)
-        for __ in range(_):
-            i = train[__][0]
-            j = train[__][1]
+        for _, __ in itertools.product([A_ for A_ in range(n)], [B_ for B_ in range(m)]):
+            i = _
+            j = __
             error = torch.dot(user[i], item[j].t()) + bi[j] + bu[i] + miu - data[i][j]
             user_gradient[i] = torch.add(user_gradient[i], torch.mul(error, item[j]))
             item_gradient[j] = torch.add(item_gradient[j], torch.mul(error, user[i]))
@@ -38,17 +39,17 @@ def biasSVD(data, k, steps, learning_rate, l):
         bu = torch.sub(bu, learning_rate * bu_gradient)
         bi = torch.sub(bi, learning_rate * bi_gradient)
         error = 0
-        count = train.shape[0]
-        for __ in range(_):
-            i = train[__][0]
-            j = train[__][1]
+        count = data.shape[0]
+        for _, __ in itertools.product([A_ for A_ in range(n)], [B_ for B_ in range(m)]):
+            i = _
+            j = __
             error += torch.pow(data[i][j]-torch.dot(user[i], item[j].t())-miu-bi[j]-bu[i], 2)
         print('----------round', t, '----------rmse is: ', torch.sqrt((1/count)*error))
         print('----------round', t, '----------train end')
-    test = torch.load('//TODO', map_location=torch.device('cpu'))
-    _ = test.shape[0]
-    for __ in range(_):
-      i = test[__][0]
-      j = test[__][0]
-      error += torch.pow(data[i][j]-torch.dot(user[i], item[j].t())-miu-bi[j]-bu[i], 2)
-      print(torch.sqrt((1/count)*error))
+    # test = torch.load('//TODO', map_location=torch.device('cpu'))
+    # _ = test.shape[0]
+    # for __ in range(_):
+    #   i = test[__][0]
+    #   j = test[__][0]
+    #   error += torch.pow(data[i][j]-torch.dot(user[i], item[j].t())-miu-bi[j]-bu[i], 2)
+    #   print(torch.sqrt((1/count)*error))
