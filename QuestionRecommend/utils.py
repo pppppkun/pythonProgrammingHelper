@@ -80,7 +80,7 @@ def get_matrix(filename):
     c = get_num_of_case(data)
     user, case = origin_data_to_list(data)
     mat = torch.empty(r, c)
-    print(mat)
+    mark_mat = []
     for _ in data:
         i = user.index(_)
         for __ in data[_]['cases']:
@@ -88,10 +88,14 @@ def get_matrix(filename):
             final_score = __['final_score']
             j = case.index(case_id)
             mat[i][j] = final_score
-    return mat
+            if [i, j] not in mark_mat:
+                mark_mat.append([i, j])
+    return mat, mark_mat
 
 
 if __name__ == '__main__':
-    mat = get_matrix('test_data.json')
+    mat, mark_mat = get_matrix('test_data.json')
+    print(len(mark_mat))
+    # print(len(mark_mat))
     # def biasSVD(data, k, steps, learning_rate, l):
-    biasSVD.biasSVD(mat, 10, 100, 0.05, 5.12)
+    biasSVD.biasSVD(mat, 10, 100, 0.0005, 0.1, mark_mat)

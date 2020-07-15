@@ -1,7 +1,7 @@
 import torch
-import itertools
 
-def biasSVD(data, k, steps, learning_rate, l):
+
+def biasSVD(data, k, steps, learning_rate, l, mark_mat):
     print(data)
     n = data.shape[0]
     m = data.shape[1]
@@ -9,7 +9,7 @@ def biasSVD(data, k, steps, learning_rate, l):
     user = torch.randn(n, k).normal_(0, 1)
     bi = torch.randn(m, 1).normal_(0, 1)
     bu = torch.randn(n, 1).normal_(0, 1)
-    miu = 3.5
+    miu = 50
     # train = torch.load('//TODO', map_location=torch.device('cpu'))
     # _ = train.shape[0]
     _ = data.shape[0]
@@ -21,9 +21,9 @@ def biasSVD(data, k, steps, learning_rate, l):
         item_gradient = torch.zeros(m, k)
         bi_gradient = torch.zeros(m, 1)
         bu_gradient = torch.zeros(n, 1)
-        for _, __ in itertools.product([A_ for A_ in range(n)], [B_ for B_ in range(m)]):
-            i = _
-            j = __
+        for _ in mark_mat:
+            i = _[0]
+            j = _[1]
             error = torch.dot(user[i], item[j].t()) + bi[j] + bu[i] + miu - data[i][j]
             user_gradient[i] = torch.add(user_gradient[i], torch.mul(error, item[j]))
             item_gradient[j] = torch.add(item_gradient[j], torch.mul(error, user[i]))
@@ -39,10 +39,10 @@ def biasSVD(data, k, steps, learning_rate, l):
         bu = torch.sub(bu, learning_rate * bu_gradient)
         bi = torch.sub(bi, learning_rate * bi_gradient)
         error = 0
-        count = data.shape[0]
-        for _, __ in itertools.product([A_ for A_ in range(n)], [B_ for B_ in range(m)]):
-            i = _
-            j = __
+        count = len(mark_mat)
+        for _ in mark_mat:
+            i = _[0]
+            j = _[1]
             error += torch.pow(data[i][j]-torch.dot(user[i], item[j].t())-miu-bi[j]-bu[i], 2)
         print('----------round', t, '----------rmse is: ', torch.sqrt((1/count)*error))
         print('----------round', t, '----------train end')
@@ -53,3 +53,5 @@ def biasSVD(data, k, steps, learning_rate, l):
     #   j = test[__][0]
     #   error += torch.pow(data[i][j]-torch.dot(user[i], item[j].t())-miu-bi[j]-bu[i], 2)
     #   print(torch.sqrt((1/count)*error))
+
+
