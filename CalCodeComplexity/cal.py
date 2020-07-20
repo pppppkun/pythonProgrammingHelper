@@ -79,7 +79,7 @@ if __name__ == '__main__':
     sys.stdout = f_handler
     MAIN = 'main.py'
     CASE = '.mooctest\\testCases.json'
-    file = '..\\train'
+    file = '..\\case_zip'
     os.chdir(file)
     fstack = list()
     for _ in os.listdir(os.getcwd()):
