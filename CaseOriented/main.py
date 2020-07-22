@@ -7,7 +7,7 @@ origin = os.getcwd()
 utils.cd()
 MAIN = 'main.py'
 CASE = '.mooctest\\testCases.json'
-file = os.getcwd() + '\\train'
+file = os.getcwd() + '\\case_zip'
 os.chdir(file)
 fstack = list()
 noc = 0
@@ -38,9 +38,19 @@ if __name__ == '__main__':
                         total += 1
                         utils.rm_file(filename)
                     except PermissionError:
+                        print('permissionError')
                         print(_, __, ___)
+                        exit()
                     except zipfile.BadZipFile:
+                        print('badZipFile')
                         print(_, __, ___)
+                        if ___ != '233383':
+                            exit()
+                    except FileNotFoundError:
+                        print('fileNoteFoundError')
+                        print(_, __, ___)
+                        exit()
+
                 os.chdir(fstack[-1])
                 fstack.pop(-1)
             os.chdir(fstack[-1])

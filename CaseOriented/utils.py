@@ -102,7 +102,7 @@ def cd():
 
 
 def get_score(user_id, case_id):
-    f = open(r'E:\PythonProject\bigHomework\sample.json', encoding='utf-8')
+    f = open(r'E:\PythonProject\bigHomework\test_data.json', encoding='utf-8')
     res = f.read()
     data = json.loads(res)
     cases = data[user_id]['cases']
@@ -116,7 +116,7 @@ def get_msg(res):
     cor = eval(_.read())
     _.close()
     cd()
-    f = open('sample.json', encoding='utf-8')
+    f = open('test_data.json', encoding='utf-8')
     _ = f.read()
     data = json.loads(_)
     r = dict()
@@ -180,16 +180,12 @@ def get_msg(res):
 
 
 if __name__ == '__main__':
-    code = r'E:\PythonProject\bigHomework\train\3544\2172线性表\268885\main.py'
-    case = r'E:\PythonProject\bigHomework\train\3544\2172线性表\268885\.mooctest\testCases.json'
-    raa = dict()
-    c = detect_use_case_oriented(code, case, user_id='3544', case_id='2172线性表', upload_id='268885', r=raa)
-    print(raa['3544 2172'])
-    print(raa['3544 2172'].match_records['268885'])
-    a = {'a': 2, 'b': 1, 'c': 3}
-    print(a)
-    print(sorted(a))
-    print(sorted(a, key=lambda x:a[x]))
+    f = open(r'E:\PythonProject\bigHomework\test_data.json', encoding='utf-8')
+    res = f.read()
+    data = json.loads(res)
+    for _ in data['47329']['cases']:
+        if _['case_id']=='2784':
+            print(_)
 
 
 
