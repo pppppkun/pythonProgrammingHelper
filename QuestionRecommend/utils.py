@@ -1,7 +1,7 @@
 import os
 import json
-import torch
-import biasSVD
+import numpy as np
+# import biasSVD
 
 # 61715
 # 271
@@ -15,7 +15,7 @@ def open_json(filename):
     __ = os.getcwd()
     s = ''.join(reversed(s))
     for _ in range(len(os.getcwd())):
-        if s[_] == '\\':
+        if s[_] == '/':
             break
     os.chdir(os.getcwd()[:len(s) - _ - 1])
 
@@ -79,7 +79,7 @@ def get_matrix(filename):
     r = get_num_of_user(data)
     c = get_num_of_case(data)
     user, case = origin_data_to_list(data)
-    mat = torch.empty(r, c)
+    mat = np.empty(shape=[r, c])
     mark_mat = []
     for _ in data:
         i = user.index(_)
@@ -95,7 +95,12 @@ def get_matrix(filename):
 
 if __name__ == '__main__':
     mat, mark_mat = get_matrix('test_data.json')
-    print(len(mark_mat))
+    # print(len(mark_mat))
+    t = np.random.rand(len(mark_mat), 1)
+    # print(t[0])
+    train = [mark_mat[_] for _ in range(len(mark_mat)) if t[_][0] >= 0.2]
+    test = [mark_mat[_] for _ in range(len(mark_mat)) if t[_][0] < 0.2]
+    # print(len(train)+len(test))
     # print(len(mark_mat))
     # def biasSVD(data, k, steps, learning_rate, l):
-    biasSVD.biasSVD(mat, 10, 100, 0.0005, 0.1, mark_mat)
+    # biasSVD.biasSVD(mat, 10, 100, 0.0005, 0.1, mark_mat)

@@ -2,3 +2,4 @@
 /train
 /.idea
 *.json
+.DS_Store
