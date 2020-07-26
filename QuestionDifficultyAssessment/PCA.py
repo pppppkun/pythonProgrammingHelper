@@ -14,7 +14,7 @@ for i in range(len(rows)):
 X = np.array(rows)
 pca = PCA(n_components=2, svd_solver='full', copy=True, whiten=True)
 newX = pca.fit_transform(X)
-
+print(pca.explained_variance_ratio_)
 
 # K-means cluster analysis
 k = KmeansAssessment.Assessment(newX)
@@ -39,6 +39,6 @@ for i in range(len(newX)):
 plt.show()
 
 data = pd.read_csv("final.csv")
-data["classfication"] = kmeans.labels_
+data["classification"] = kmeans.labels_
 data.to_csv("final.csv", mode='w', index=False)
 

@@ -11,14 +11,14 @@ class Assessment:
         inertias = []
         silhouette = []
         calinski_harabasz = []
-        for i in range(3, 8):
+        for i in range(3, 9):
             kmeans = KMeans(n_clusters=i, copy_x=True).fit(self.data)
             inertias.append(kmeans.inertia_)
             silhouette.append(silhouette_score(self.data, kmeans.labels_))
             calinski_harabasz.append(calinski_harabasz_score(self.data, kmeans.labels_))
         plt.xlabel("k")
         plt.ylabel("inertia")
-        X = range(3, 8)
+        X = range(3, 9)
         plt.plot(X, inertias, "o-")
         plt.show()
         plt.xlabel("k")
