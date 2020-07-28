@@ -24,7 +24,7 @@ print(pca.explained_variance_ratio_)
 #k = KmeansAssessment.Assessment(newX)
 #k.assessment()
 
-kmeans = KMeans(n_clusters=4, copy_x=True).fit(newX)
+kmeans = KMeans(n_clusters=5, copy_x=True).fit(newX)
 print(kmeans.cluster_centers_)
 print(kmeans.inertia_)
 fig = plt.figure()
